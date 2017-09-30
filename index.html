@@ -203,14 +203,22 @@
     let AddTodo = ({ dispatch }) => {
       let input;
       return (
-        <div>
-          <input ref={node => {
-            input = node;
-          }} />
+        <div className="add-todo">
+          <input
+            ref={node => input = node}
+            className="add-todo__input"
+            placeholder="New TODO"
+            onKeyUp={(e) => {
+              if (e.keyCode === 13) {
+                dispatch(addTodo(input.value));
+                input.value = '';
+              }
+            }}
+          />
           <button onClick={() => {
             dispatch(addTodo(input.value));
             input.value = '';
-          }}>
+          }} className="add-todo__button">
             Add Todo
           </button>
         </div>
@@ -267,8 +275,14 @@
     const { Provider } = ReactRedux;
     const { createStore } = Redux;
 
+    const todoAppStore = createStore(todoApp);
+    todoAppStore.dispatch(addTodo('New TODO'));
+    todoAppStore.dispatch(addTodo('Even newer TODO'));
+    todoAppStore.dispatch(addTodo('One more TODO'));
+    todoAppStore.dispatch(toggleTodo(0));
+
     ReactDOM.render(
-      <Provider store={createStore(todoApp)}>
+      <Provider store={todoAppStore}>
         <TodoApp />
       </Provider>,
       document.getElementById('root')
