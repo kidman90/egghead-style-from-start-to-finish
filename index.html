@@ -6,7 +6,7 @@
   <title>Style an Application from Start to Finish</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.3.1/redux.js"></script>
-  <script src="https://fb.me/react-0.14.7.js"></script>
+  <script src="https://fb.me/react-with-addons-0.14.0.js"></script>
   <script src="https://fb.me/react-dom-0.14.7.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/4.0.0/react-redux.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -18,6 +18,8 @@
   <div id="root" class="container"></div>
 
   <script type="text/babel">
+    const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
     const todo = (state, action) => {
       switch (action.type) {
         case 'ADD_TODO':
@@ -182,7 +184,13 @@
       todos,
       onTodoClick
     }) => (
-        <ul className="todo-list">
+        <ReactCSSTransitionGroup
+          component="ul"
+          className="todo-list"
+          transitionName="todo-transition"
+          transitionEnterTimeout={70}
+          transitionLeaveTimeout={70}
+        >        
           {todos.map(todo =>
             <Todo
               key={todo.id}
@@ -190,7 +198,7 @@
               onClick={() => onTodoClick(todo.id)}
             />
           )}
-        </ul>
+        </ReactCSSTransitionGroup>
       );
 
     let AddTodo = ({ dispatch }) => {
